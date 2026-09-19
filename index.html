@@ -1,107 +1,608 @@
 <!doctype html>
+
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Nova</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#0b0f17;color:#fff;height:100vh;display:flex}
-aside{width:220px;background:#151b27;padding:18px}
-.logo{font-size:24px;font-weight:bold;margin-bottom:25px}
-button{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-size:14px}
-.new{width:100%;margin-bottom:15px}
-.nav{width:100%;text-align:left;background:transparent;color:#fff;margin:4px 0}
-.nav:hover{background:#252d3d}
-main{flex:1;display:flex;flex-direction:column;min-width:0}
-header{height:64px;border-bottom:1px solid #252d3d;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
-.tools button{margin-left:6px;background:#202838;color:#fff}
-#messages{flex:1;overflow:auto;padding:25px}
-.msg{max-width:800px;margin:10px auto;padding:13px 16px;border-radius:14px;line-height:1.45}
-.user{background:#24304a}.nova{background:#171e2b}
-.composer{padding:16px;display:flex;gap:8px;max-width:900px;width:100%;margin:auto}
-textarea{flex:1;resize:none;background:#171e2b;color:#fff;border:1px solid #30394b;border-radius:14px;padding:14px;font:inherit}
-.send,.talk{background:#fff;color:#111;font-weight:bold}
-.status{color:#72e0a0;font-size:13px}
-.hidden{display:none}
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0b0f17;
+  color:#fff;
+  height:100vh;
+  display:flex
+}
+
+aside{
+  width:220px;
+  background:#151b27;
+  padding:18px
+}
+
+.logo{
+  font-size:24px;
+  font-weight:bold;
+  margin-bottom:25px
+}
+
+button{
+  border:0;
+  border-radius:10px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-size:14px
+}
+
+.new{
+  width:100%;
+  margin-bottom:15px
+}
+
+.nav{
+  width:100%;
+  text-align:left;
+  background:transparent;
+  color:#fff;
+  margin:4px 0
+}
+
+.nav:hover{
+  background:#252d3d
+}
+
+main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-width:0
+}
+
+header{
+  height:64px;
+  border-bottom:1px solid #252d3d;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px
+}
+
+.tools button{
+  margin-left:6px;
+  background:#202838;
+  color:#fff
+}
+
+#messages{
+  flex:1;
+  overflow:auto;
+  padding:25px
+}
+
+.msg{
+  max-width:800px;
+  margin:10px auto;
+  padding:13px 16px;
+  border-radius:14px;
+  line-height:1.45;
+  white-space:pre-wrap
+}
+
+.user{
+  background:#24304a
+}
+
+.nova{
+  background:#171e2b
+}
+
+.composer{
+  padding:16px;
+  display:flex;
+  gap:8px;
+  max-width:900px;
+  width:100%;
+  margin:auto
+}
+
+textarea{
+  flex:1;
+  resize:none;
+  background:#171e2b;
+  color:#fff;
+  border:1px solid #30394b;
+  border-radius:14px;
+  padding:14px;
+  font:inherit
+}
+
+.send,.talk{
+  background:#fff;
+  color:#111;
+  font-weight:bold
+}
+
+.status{
+  color:#72e0a0;
+  font-size:13px
+}
+
+.hidden{
+  display:none
+}
+
+.typing{
+  opacity:.7
+}
+
+@media(max-width:700px){
+  aside{
+    width:170px;
+    padding:12px
+  }
+
+  .tools{
+    display:none
+  }
+
+  #messages{
+    padding:12px
+  }
+
+  .composer{
+    padding:10px
+  }
+}
 </style>
+
 </head>
+
 <body>
+
 <aside>
+
 <div class="logo">✨ Nova</div>
-<button class="new" onclick="newChat()">＋ Nouvelle discussion</button>
-<button class="nav" onclick="showPanel('Chat')">💬 Chat</button>
-<button class="nav" onclick="showPanel('Images')">🎨 Créer une image</button>
-<button class="nav" onclick="showPanel('Fichiers')">📄 Créer un fichier</button>
-<button class="nav" onclick="showPanel('Code')">💻 Coder</button>
-<button class="nav" onclick="showPanel('Jeux')">🧩 Jeux / applis</button>
+
+<button class="new" onclick="newChat()">
+＋ Nouvelle discussion
+</button>
+
+<button class="nav" onclick="showPanel('Chat')">
+💬 Chat
+</button>
+
+<button class="nav" onclick="showPanel('Images')">
+🎨 Créer une image
+</button>
+
+<button class="nav" onclick="showPanel('Fichiers')">
+📄 Créer un fichier
+</button>
+
+<button class="nav" onclick="showPanel('Code')">
+💻 Coder
+</button>
+
+<button class="nav" onclick="showPanel('Jeux')">
+🧩 Jeux / applis
+</button>
+
 </aside>
 
 <main>
+
 <header>
-<div><b id="title">Chat</b><div class="status">● Prêt</div></div>
-<div class="tools">
-<button onclick="quick('Explique-moi simplement ce sujet : ')">💡 Expliquer</button>
-<button onclick="quick('Rédige-moi : ')">✍️ Rédiger</button>
-<button onclick="quick('Analyse ceci : ')">🔎 Analyser</button>
-<button onclick="quick('Écris le code pour : ')">💻 Coder</button>
+
+<div>
+<b id="title">Chat</b>
+<div class="status" id="status">● Prêt</div>
 </div>
+
+<div class="tools">
+
+<button onclick="quick('Explique-moi simplement ce sujet : ')">
+💡 Expliquer
+</button>
+
+<button onclick="quick('Rédige-moi : ')">
+✍️ Rédiger
+</button>
+
+<button onclick="quick('Analyse ceci : ')">
+🔎 Analyser
+</button>
+
+<button onclick="quick('Écris le code pour : ')">
+💻 Coder
+</button>
+
+</div>
+
 </header>
 
 <div id="messages">
-<div class="msg nova">Bonjour 👋 Je suis Nova. Écris un message et clique sur <b>➤</b>.</div>
+
+<div class="msg nova">
+Bonjour 👋 Je suis Nova. Écris un message et clique sur ➤.
+</div>
+
 </div>
 
 <div class="composer">
-<input id="file" type="file" class="hidden" onchange="filePicked()">
-<button onclick="document.getElementById('file').click()">📎</button>
-<textarea id="input" rows="2" placeholder="Écris à Nova..."></textarea>
-<button class="talk" id="talk" onclick="voice()">🎙️ Parler</button>
-<button class="send" onclick="send()">➤</button>
+
+<input
+id="file"
+type="file"
+class="hidden"
+onchange="filePicked()"
+
+>
+
+<button onclick="document.getElementById('file').click()">
+📎
+</button>
+
+<textarea
+id="input"
+rows="2"
+placeholder="Écris à Nova..."
+></textarea>
+
+<button
+class="talk"
+id="talk"
+onclick="voice()"
+
+>
+
+🎙️ Parler </button>
+
+<button
+class="send"
+id="send"
+onclick="send()"
+
+>
+
+➤ </button>
+
 </div>
+
 </main>
 
 <script>
-const input=document.getElementById('input');
-const messages=document.getElementById('messages');
-let recognition=null;
 
-function add(text,who){
-  const d=document.createElement('div');
-  d.className='msg '+who;
-  d.textContent=text;
+const WORKER_URL =
+"https://nova-ia.yanisjanecek.workers.dev/";
+
+const input =
+document.getElementById("input");
+
+const messages =
+document.getElementById("messages");
+
+const status =
+document.getElementById("status");
+
+const sendButton =
+document.getElementById("send");
+
+let recognition = null;
+
+
+/* -----------------------------
+   AFFICHER UN MESSAGE
+----------------------------- */
+
+function add(text, who){
+
+  const d =
+  document.createElement("div");
+
+  d.className =
+  "msg " + who;
+
+  d.textContent =
+  text;
+
   messages.appendChild(d);
-  messages.scrollTop=messages.scrollHeight;
+
+  messages.scrollTop =
+  messages.scrollHeight;
+
+  return d;
 }
-function send(){
-  const t=input.value.trim();
-  if(!t)return;
-  add(t,'user'); input.value='';
-  setTimeout(()=>add("Je suis Nova. Ton message a bien été reçu. Pour avoir une vraie réponse générée par une IA, il faudra ensuite connecter un moteur IA.",'nova'),300);
+
+
+/* -----------------------------
+   ENVOYER À L'IA
+----------------------------- */
+
+async function send(){
+
+  const t =
+  input.value.trim();
+
+  if(!t) return;
+
+  add(t,"user");
+
+  input.value = "";
+
+  sendButton.disabled = true;
+
+  status.textContent =
+  "● Nova réfléchit...";
+
+  const thinking =
+  add("Réflexion en cours...","nova");
+
+  thinking.classList.add("typing");
+
+  try{
+
+    const response =
+    await fetch(
+      WORKER_URL,
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":
+          "application/json"
+        },
+        body:JSON.stringify({
+          message:t
+        })
+      }
+    );
+
+    const data =
+    await response.json();
+
+    thinking.remove();
+
+    if(!response.ok){
+
+      add(
+        data.error ||
+        "Une erreur est survenue.",
+        "nova"
+      );
+
+      return;
+    }
+
+    add(
+      data.response ||
+      "Nova n'a pas retourné de réponse.",
+      "nova"
+    );
+
+  }
+
+  catch(error){
+
+    thinking.remove();
+
+    add(
+      "Impossible de contacter Nova. Vérifie la connexion au serveur.",
+      "nova"
+    );
+
+    console.error(error);
+
+  }
+
+  finally{
+
+    sendButton.disabled = false;
+
+    status.textContent =
+    "● Prêt";
+
+    input.focus();
+
+  }
+
 }
-function quick(t){input.value=t;input.focus()}
-function newChat(){messages.innerHTML='<div class="msg nova">Nouvelle discussion ✨</div>';input.value=''}
+
+
+/* -----------------------------
+   BOUTONS RAPIDES
+----------------------------- */
+
+function quick(t){
+
+  input.value = t;
+
+  input.focus();
+
+}
+
+
+/* -----------------------------
+   NOUVELLE DISCUSSION
+----------------------------- */
+
+function newChat(){
+
+  messages.innerHTML =
+  '<div class="msg nova">Nouvelle discussion ✨</div>';
+
+  input.value = "";
+
+  status.textContent =
+  "● Prêt";
+
+}
+
+
+/* -----------------------------
+   PANNEAUX
+----------------------------- */
+
 function showPanel(name){
-  document.getElementById('title').textContent=name;
-  add("Section « "+name+" » ouverte.",'nova');
+
+  document.getElementById(
+    "title"
+  ).textContent = name;
+
+  add(
+    "Section « " +
+    name +
+    " » ouverte.",
+    "nova"
+  );
+
 }
+
+
+/* -----------------------------
+   FICHIER
+----------------------------- */
+
 function filePicked(){
-  const f=document.getElementById('file').files[0];
-  if(f)add("Fichier ajouté : "+f.name,'user');
+
+  const f =
+  document.getElementById(
+    "file"
+  ).files[0];
+
+  if(f){
+
+    add(
+      "Fichier ajouté : " +
+      f.name,
+      "user"
+    );
+
+  }
+
 }
+
+
+/* -----------------------------
+   VOIX
+----------------------------- */
+
 function voice(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){alert("La reconnaissance vocale n'est pas disponible dans ce navigateur.");return}
-  if(recognition){recognition.stop();return}
-  recognition=new SR();
-  recognition.lang='fr-FR';
-  recognition.interimResults=false;
-  recognition.onstart=()=>document.getElementById('talk').textContent='⏹️ Arrêter';
-  recognition.onresult=e=>{input.value=e.results[0][0].transcript;send()}
-  recognition.onerror=e=>alert("Micro : "+e.error);
-  recognition.onend=()=>{recognition=null;document.getElementById('talk').textContent='🎙️ Parler'};
+
+  const SR =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
+  if(!SR){
+
+    alert(
+      "La reconnaissance vocale n'est pas disponible dans ce navigateur."
+    );
+
+    return;
+
+  }
+
+  if(recognition){
+
+    recognition.stop();
+
+    return;
+
+  }
+
+  recognition =
+  new SR();
+
+  recognition.lang =
+  "fr-FR";
+
+  recognition.interimResults =
+  false;
+
+  recognition.continuous =
+  false;
+
+  recognition.onstart =
+  () => {
+
+    document.getElementById(
+      "talk"
+    ).textContent =
+    "⏹️ Arrêter";
+
+    status.textContent =
+    "● Écoute...";
+
+  };
+
+  recognition.onresult =
+  e => {
+
+    input.value =
+    e.results[0][0].transcript;
+
+    send();
+
+  };
+
+  recognition.onerror =
+  e => {
+
+    alert(
+      "Micro : " +
+      e.error
+    );
+
+  };
+
+  recognition.onend =
+  () => {
+
+    recognition =
+    null;
+
+    document.getElementById(
+      "talk"
+    ).textContent =
+    "🎙️ Parler";
+
+    status.textContent =
+    "● Prêt";
+
+  };
+
   recognition.start();
+
 }
-input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
+
+
+/* -----------------------------
+   TOUCHE ENTRÉE
+----------------------------- */
+
+input.addEventListener(
+  "keydown",
+  e => {
+
+    if(
+      e.key === "Enter" &&
+      !e.shiftKey
+    ){
+
+      e.preventDefault();
+
+      send();
+
+    }
+
+  }
+);
+
 </script>
+
 </body>
 </html>
+
